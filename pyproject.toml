@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "labforecast"
+version = "1.0.0"
+description = "Predicting treatment-associated complications from routine laboratory trajectories in cancer"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Jannik Lübberstedt"}]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "transformers>=4.53",
+    "numpy>=2.2,<2.4",
+    "pandas>=2.0",
+    "scikit-learn>=1.5",
+    "xgboost>=2.0",
+    "joblib",
+    "pyyaml",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+labforecast = "labforecast.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["labforecast*"]
+
+[tool.setuptools.package-data]
+labforecast = ["resources/*.json"]

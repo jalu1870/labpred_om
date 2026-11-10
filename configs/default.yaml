@@ -1,0 +1,45 @@
+# Hyperparameters of the published model.
+seed: 0
+
+test_windows:           # evaluation windows
+  max_windows: 10
+  rare_codes: [D46.7, D46.2, D46.9]   # patients positive for these keep up to 20 windows
+  rare_max_windows: 20
+
+imputation:
+  seed: 0
+  imputation_model: {n_channels: 40, hidden_size: 256, num_heads: 2, num_layers: 4}
+  lr: 1.0e-3
+  batch_size: 20
+  mask_prob: 0.2
+  timepoint_prob: 0.05
+  val_mask_prob: 0.25
+  val_timepoint_prob: 0.05
+  warmup_epochs: 40
+  max_epochs: 2000
+  patience: 150
+
+diagnosis:
+  seed: 0
+  n_folds: 5
+  diagnosis_model: {n_channels: 40, n_diagnoses: 162, hidden_size: 64, num_heads: 2, num_layers: 4, dropout: 0.1}
+  windows:              # prediction windows (labforecast.data.make_windows)
+    horizon: 720        # days after the window in which new diagnoses are counted
+    min_followup: 100   # stop cutting windows when less follow-up than this remains
+    window_days: [10, 30]
+    max_windows: 10     # windows per patient and epoch
+  val_horizon: 730
+  lr: 1.0e-3
+  batch_size: 64        # patients per batch
+  warmup_epochs: 40
+  max_epochs: 2000
+  patience: 20          # epochs without improvement of the validation group AUROC
+
+split:
+  test_fraction: 0.1
+  seed: 55
+
+evaluation:
+  n_resamples: 1000
+  seed: 5
+  min_events: 10        # per-diagnosis metrics: diagnoses with at least this many positive windows
